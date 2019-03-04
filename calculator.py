@@ -51,13 +51,13 @@ class CalculatorWindow(QtWidgets.QWidget,Ui_Calculator):
         if ((self.addition_btn.isChecked() or self.subtration_btn.isChecked() or
                 self.multiplication_btn.isChecked() or self.division_btn.isChecked()) and
                 (not self.userIsTypingSecondNumber)):
-            newLabel = format(float(button.text()), ".15g")
+            newLabel = format(float(button.text()), ".8g")
             self.userIsTypingSecondNumber = True
         else:
             if (("." in self.Results.text()) and (button.text() == "0")):
-                newLabel = format(self.Results.text() + button.text(), ".15")
+                newLabel = format(self.Results.text() + button.text(), ".8")
             else:
-                newLabel = format(float(self.Results.text() + button.text()), ".15g")
+                newLabel = format(float(self.Results.text() + button.text()), ".8g")
 
         self.Results.setText(newLabel)
 
@@ -75,7 +75,7 @@ class CalculatorWindow(QtWidgets.QWidget,Ui_Calculator):
         else:
             labelNumber *= 0.01
 
-        newLabel = format(labelNumber, ".15g")
+        newLabel = format(labelNumber, ".8g")
         self.Results.setText(newLabel)
 
     def binary_operation_pressed(self):
@@ -91,22 +91,22 @@ class CalculatorWindow(QtWidgets.QWidget,Ui_Calculator):
 
         if self.addition_btn.isChecked():
             labelNumber = self.firstNum + secondNum
-            newLabel = format(labelNumber, ".15g")
+            newLabel = format(labelNumber, ".8g")
             self.Results.setText(newLabel)
             self.addition_btn.setChecked(False)
         elif self.subtration_btn.isChecked():
             labelNumber = self.firstNum - secondNum
-            newLabel = format(labelNumber, ".15g")
+            newLabel = format(labelNumber, ".8g")
             self.Results.setText(newLabel)
             self.subtration_btn.setChecked(False)
         elif self.multiplication_btn.isChecked():
             labelNumber = self.firstNum * secondNum
-            newLabel = format(labelNumber, ".15g")
+            newLabel = format(labelNumber, ".8g")
             self.Results.setText(newLabel)
             self.multiplication_btn.setChecked(False)
         elif self.division_btn.isChecked():
             labelNumber = self.firstNum / secondNum
-            newLabel = format(labelNumber, ".15g")
+            newLabel = format(labelNumber, ".8g")
             self.Results.setText(newLabel)
             self.division_btn.setChecked(False)
 
