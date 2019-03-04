@@ -4,6 +4,7 @@ from calculator_ui import Ui_Calculator
 class CalculatorWindow(QtWidgets.QWidget,Ui_Calculator):
 
     firstNum = None
+    userIsTypingSecondNumber = False
 
     def __init__(self):
         super().__init__()
@@ -26,7 +27,8 @@ class CalculatorWindow(QtWidgets.QWidget,Ui_Calculator):
 
         self.percentage_btn.clicked.connect(self.unary_operation_pressed)
         self.p_n_btn.clicked.connect(self.unary_operation_pressed)
-        self.clear_btn.clicked.connect(self.unary_operation_pressed)
+
+        self.clear_btn.clicked.connect(self.clear_operation_pressed)
 
         self.addition_btn.clicked.connect(self.binary_operation_pressed)
         self.subtration_btn.clicked.connect(self.binary_operation_pressed)
@@ -43,32 +45,19 @@ class CalculatorWindow(QtWidgets.QWidget,Ui_Calculator):
 
 
     def digit_pressed(self):
-        '''version 1
-        button = self.sender()
-        self.Results.setText(button.text())
-        '''
-        '''version 2
-        button = self.sender()
-        self.Results.setText(self.Results.text() + button.text())
-        '''
-        '''version 3
-        button = self.sender()
-        newLabel = float(self.Results.text() + button.text())
-        self.Results.setText(str(newLabel))
-        '''
-        '''version 4
-        button = self.sender()
-        newLabel = format(float(self.Results.text() + button.text()), ".15g")
-        self.Results.setText(newLabel)
-        '''
+
         button = self.sender()
         #self.sender is for multiple button
-
-        if (self.addition_btn.isChecked() or self.subtration_btn.isChecked() or
-                self.multiplication_btn.isChecked() or self.division_btn.isChecked()):
+        if ((self.addition_btn.isChecked() or self.subtration_btn.isChecked() or
+                self.multiplication_btn.isChecked() or self.division_btn.isChecked()) and
+                (not self.userIsTypingSecondNumber)):
             newLabel = format(float(button.text()), ".15g")
+            self.userIsTypingSecondNumber = True
         else:
-            newLabel = format(float(self.Results.text() + button.text()), ".15g")
+            if (("." in self.Results.text()) and (button.text() == "0")):
+                newLabel = format(self.Results.text() + button.text(), ".15")
+            else:
+                newLabel = format(float(self.Results.text() + button.text()), ".15g")
 
         self.Results.setText(newLabel)
 
@@ -83,12 +72,8 @@ class CalculatorWindow(QtWidgets.QWidget,Ui_Calculator):
 
         if button.text() == "±":
             labelNumber *= -1
-
-        elif button.text() == "%":
-            labelNumber *= 0.01
-
         else:
-            labelNumber = 0
+            labelNumber *= 0.01
 
         newLabel = format(labelNumber, ".15g")
         self.Results.setText(newLabel)
@@ -124,3 +109,17 @@ class CalculatorWindow(QtWidgets.QWidget,Ui_Calculator):
             newLabel = format(labelNumber, ".15g")
             self.Results.setText(newLabel)
             self.division_btn.setChecked(False)
+
+        self.userIsTypingSecondNumber = False
+
+    def clear_operation_pressed(self):
+        self.addition_btn.setChecked(False)
+        self.subtration_btn.setChecked(False)
+        self.multiplication_btn.setChecked(False)
+        self.division_btn.setChecked(False)
+
+        self.userIsTypingSecondNumber = False
+
+        self.Results.setText("0")
+
+
